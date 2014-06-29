@@ -16,8 +16,13 @@
 <body role="document">
 
     <div class="container">
-        <h1>Clipboard</h1>
-        <div class="alert alert-danger" role="alert" id="global-alert" style="visibility: hidden">
+        <h1>TrafeX' Online Clipboard</h1>
+        <ul>
+            <li><strong>Receiver?</strong> Fill in the room number of the sender, press subscribe and wait..</li>
+            <li><strong>Sender?</strong> Paste the text you want to send in the textbox and publish.</li>
+        </ul>
+
+        <div class="alert alert-danger" role="alert" id="global-alert" style="display: none">
             Unknown error.
         </div>
         <div class="row">
@@ -74,7 +79,7 @@
         $('#msg').submit(function(){
             var msg = $('#text').val();
             socket.emit('publish', msg);
-            $('#messages').append($('<li>').text(addTimestamp(msg)));
+            $('#messages').prepend($('<li>').text(addTimestamp(msg)));
             $('#text').val('');
             return false;
         });
@@ -85,7 +90,7 @@
             return false;
         });
         socket.on('message', function(msg){
-            $('#received-messages').append($('<li>').text(addTimestamp(msg)));
+            $('#received-messages').prepend($('<li>').text(addTimestamp(msg)));
         });
         socket.on('registered', function(roomId){
             $('#roomid').text(roomId);
@@ -93,14 +98,13 @@
 
         // Error handling
         socket.on('connect_error', function(error){
-            $('#global-alert').text(error);
-            $('#global-alert').fadeIn('slow');
+            $('#global-alert').text(error.message);
+            $('#global-alert').slideDown();
         });
         socket.on('reconnect_failed', function(error){
-            $('#global-alert').text(error);
-            $('#global-alert').fadeIn('slow');
+            $('#global-alert').text(error.message);
+            $('#global-alert').slideDown();
         });
-
 
         function addTimestamp(msg) {
             // @todo:
