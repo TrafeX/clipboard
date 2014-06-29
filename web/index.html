@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TrafeX' Online Clipboard</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body role="document">
+
+    <div class="container">
+        <h1>Clipboard</h1>
+        <div class="alert alert-danger" role="alert" id="global-alert" style="visibility: hidden">
+            Unknown error.
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Publish in room <span id="roomid">[connecting..]</span></h3>
+                </div>
+                <div class="panel-body">
+                    <form id="msg" action="">
+                        <p>
+                            <label for="text">Text:</label>
+                            <textarea id="text" class="form-control" rows="3" placeholder="Enter text.."></textarea>
+                        </p>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                    <br />
+                    <p>
+                        <h4>History</h4>
+                        <ul id="messages"></ul>
+                    </p>
+                </div>
+            </div>
+            </div>
+            <div class="col-sm-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                <h3 class="panel-title">Subscribe to room</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="subscribe" action="">
+                        <p>
+                            <label for="i">Room:</label>
+                            <input id="i" type="text" class="form-control" placeholder="Insert room..">
+                        </p>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                    <br />
+                    <p style='display: none'>
+                        <h4 id="subscribed-room"></h4>
+                        <ul id="received-messages"></ul>
+                    </p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+        var socket = io();
+        $('#msg').submit(function(){
+            var msg = $('#text').val();
+            socket.emit('publish', msg);
+            $('#messages').append($('<li>').text(addTimestamp(msg)));
+            $('#text').val('');
+            return false;
+        });
+        $('#subscribe').submit(function(){
+            var roomNr = $('#i').val();
+            socket.emit('join', roomNr);
+            $('#subscribed-room').text('Subscribed to room ' + roomNr);
+            return false;
+        });
+        socket.on('message', function(msg){
+            $('#received-messages').append($('<li>').text(addTimestamp(msg)));
+        });
+        socket.on('registered', function(roomId){
+            $('#roomid').text(roomId);
+        });
+
+        // Error handling
+        socket.on('connect_error', function(error){
+            $('#global-alert').text(error);
+            $('#global-alert').fadeIn('slow');
+        });
+        socket.on('reconnect_failed', function(error){
+            $('#global-alert').text(error);
+            $('#global-alert').fadeIn('slow');
+        });
+
+
+        function addTimestamp(msg) {
+            // @todo:
+            //return $.datepicker.formatDate('yy-mm-dd', new Date()) + ': ' + msg;
+            return msg;
+        }
+    </script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-7432038-3', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
