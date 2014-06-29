@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TrafeX' Online Clipboard</title>
+    <title>TrafeX' Realtime Clipboard</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,7 +16,7 @@
 <body role="document">
 
     <div class="container">
-        <h1>TrafeX' Online Clipboard</h1>
+        <h1>TrafeX' Realtime Clipboard</h1>
         <ul>
             <li><strong>Receiver?</strong> Fill in the room number of the sender, press subscribe and wait..</li>
             <li><strong>Sender?</strong> Paste the text you want to send in the textbox and publish.</li>
@@ -29,7 +29,7 @@
             <div class="col-sm-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Publish in room <span id="roomid">[connecting..]</span></h3>
+                    <h3 class="panel-title">Publish in room <strong><span id="roomid">[connecting..]</span></strong></h3>
                 </div>
                 <div class="panel-body">
                     <form id="msg" action="">
@@ -61,7 +61,7 @@
                         <button type="submit" class="btn btn-primary">Subscribe</button>
                     </form>
                     <br />
-                    <p style='display: none'>
+                    <p style="display: none">
                         <h4 id="subscribed-room"></h4>
                         <ul id="received-messages"></ul>
                     </p>
