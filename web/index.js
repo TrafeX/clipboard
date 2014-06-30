@@ -38,7 +38,6 @@ io.on('connection', function(socket){
     ++nrUsers;
 
     console.log('User ' + nrUsers + ' registered in room: ' + socket.roomId);
-
     socket.on('disconnect', function(){
         delete roomIds[socket.roomId];
         --nrUsers;
@@ -48,15 +47,22 @@ io.on('connection', function(socket){
         io.to(socket.roomId).emit('message', msg);
     });
     socket.on('join', function(room){
+        if (typeof(roomIds['room-' + room]) == 'undefined') {
+            socket.emit('global-error', 'Room doesn\'t exists. Fill in the room number of the "sending" device');
+            return;
+        }
         if (socket.subscribedRoom) {
             socket.leave(socket.subscribedRoom);
         }
         socket.subscribedRoom = 'room-' + room
+        // @todo: Not working
+        // io.to(socket.subscribedRoom).emit('subscribed-listener', socket.roomId);
         socket.join(socket.subscribedRoom);
-        console.log('User in room '+socket.roomId+' joins room ' + socket.subscribedRoom);
+        socket.emit('subscribed', room);
+        console.log('User in room ' + socket.roomId + ' joins room ' + socket.subscribedRoom);
     });
 });
 
 http.listen(3000, function(){
-    console.log('listening on *:3000');
+    console.log('Listening on *:3000');
 });

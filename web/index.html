@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TrafeX' Realtime Clipboard</title>
+    <title>Clipboard.ninja - Realtime Clipboard</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -12,29 +12,37 @@
       <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <meta name="description" content="Quick and realtime share text between computers or mobile devices without the need for a account.">
+    <meta name="keywords" content="clipboard, online, realtime, virtual, sharing, computer, mobile, exchange, copy, paste, transfer">
+    <meta name="author" content="Tim de Pater - TrafeX.nl">
 </head>
 <body role="document">
 
     <div class="container">
-        <h1>TrafeX' Realtime Clipboard</h1>
-        <ul>
-            <li><strong>Receiver?</strong> Fill in the room number of the sender, press subscribe and wait..</li>
-            <li><strong>Sender?</strong> Paste the text you want to send in the textbox and publish.</li>
-        </ul>
+        <h1>Clipboard.ninja - Realtime Clipboard</h1>
+        <p>This online clipboard makes it easy to share text between computers or mobile devices.</p>
+        <strong>Steps</strong>
+        <ol>
+            <li>Open this website on both devices</li>
+            <li>Fill in the room number on the receiving device, press subscribe and wait..</li>
+            <li>Type or paste the text you want to send on the sending device</li>
+            <li>See the text appear on the receiving device after pressing 'send'</li>
+        </ol>
 
         <div class="alert alert-danger" role="alert" id="global-alert" style="display: none">
             Unknown error.
         </div>
+        <div class="alert alert-success" role="alert" id="announce" style="display: none"></div>
         <div class="row">
             <div class="col-sm-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Publish in room <strong><span id="roomid">[connecting..]</span></strong></h3>
+                    <h3 class="panel-title">Room number: <strong><span id="roomid">[connecting..]</span></strong></h3>
                 </div>
                 <div class="panel-body">
                     <form id="msg" action="">
                         <p>
-                            <label for="text">Text:</label>
+                            <label for="text">Type or paste text below</label>
                             <textarea id="text" class="form-control" rows="3" placeholder="Enter text.."></textarea>
                         </p>
                         <button type="submit" class="btn btn-primary">Send</button>
@@ -55,8 +63,8 @@
                 <div class="panel-body">
                     <form id="subscribe" action="">
                         <p>
-                            <label for="i">Room:</label>
-                            <input id="i" type="text" class="form-control" placeholder="Insert room..">
+                            <label for="i">Enter room number of the other device to receive the text</label>
+                            <input id="i" type="number" class="form-control" placeholder="Enter room.." min="100000">
                         </p>
                         <button type="submit" class="btn btn-primary">Subscribe</button>
                     </form>
@@ -69,6 +77,9 @@
             </div>
             </div>
         </div>
+    <footer>
+        &copy; 2014 <a href="http://www.trafex.nl">Tim de Pater</a>
+    </footer>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -76,6 +87,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script>
         var socket = io();
+        // Listeners
         $('#msg').submit(function(){
             var msg = $('#text').val();
             socket.emit('publish', msg);
@@ -86,23 +98,44 @@
         $('#subscribe').submit(function(){
             var roomNr = $('#i').val();
             socket.emit('join', roomNr);
-            $('#subscribed-room').text('Subscribed to room ' + roomNr);
             return false;
         });
+
+        // Events
         socket.on('message', function(msg){
             $('#received-messages').prepend($('<li>').text(addTimestamp(msg)));
         });
         socket.on('registered', function(roomId){
             $('#roomid').text(roomId);
         });
+        socket.on('subscribed', function(roomId){
+            $('#global-alert').slideUp();
+            $('#subscribed-room').text('Received text from room ' + roomId);
+        });
+        socket.on('subscribed-listener', function(fromRoom){
+            $('#announce').text('A user subscribed.');
+            $('#announce').slideDown().delay(2000).slideUp();
+        });
 
-        // Error handling
+        // Connection handling
         socket.on('connect_error', function(error){
-            $('#global-alert').text(error.message);
+            $('#global-alert').html('<strong>Connection lost.</strong> Reconnecting..');
             $('#global-alert').slideDown();
         });
         socket.on('reconnect_failed', function(error){
-            $('#global-alert').text(error.message);
+            $('#global-alert').html('<strong>Reconnecting failed.</strong> Try to refresh this page in a few minutes.');
+            $('#global-alert').slideDown();
+        });
+        socket.on('connect', function(){
+            $('#global-alert').slideUp();
+        });
+        socket.on('reconnect', function(){
+            $('#global-alert').slideUp();
+        });
+
+        // Error handling
+        socket.on('global-error', function(errorMsg){
+            $('#global-alert').text(errorMsg);
             $('#global-alert').slideDown();
         });
 

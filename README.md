@@ -1,15 +1,12 @@
-# Clipboard
+# Clipboard.ninja
 
-Online clipboard for fast exchange of plaintext data.
-
+Online realtime clipboard for exchanging text between everything with a browser.
 
 ## Todo
 
-* Santize/validate input for room nr
-* Add help (step 1.. step 2..)
+* Add help (step 1.. step 2..) and 'how does it work' page.
 * Add timestamps to send/received messages
 * Add timestamp to console.log output
-* Only connect to existing rooms
 
 ## Nice to have
 
@@ -17,3 +14,4 @@ Online clipboard for fast exchange of plaintext data.
 * Brute-force protection
 * Number of users in room
 * HTTPS
+* Support for files
