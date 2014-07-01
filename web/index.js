@@ -34,7 +34,7 @@ io.on('connection', function(socket){
 
     socket.emit('registered', socket.roomNr);
 
-    roomIds[socket.roomId] = socket.roomId;
+    roomIds[socket.roomId] = socket.id;
     ++nrUsers;
 
     console.log('User ' + nrUsers + ' registered in room: ' + socket.roomId);
@@ -48,7 +48,10 @@ io.on('connection', function(socket){
     });
     socket.on('join', function(room){
         if (typeof(roomIds['room-' + room]) == 'undefined') {
-            socket.emit('global-error', 'Room doesn\'t exists. Fill in the room number of the "sending" device');
+            socket.emit('global-error', 'Sender ID doesn\'t exists. Enter the sender ID of the "sending" device');
+            return;
+        }
+        if (socket.subscribedRoom == 'room-' + room) {
             return;
         }
         if (socket.subscribedRoom) {
@@ -56,7 +59,7 @@ io.on('connection', function(socket){
         }
         socket.subscribedRoom = 'room-' + room
         // @todo: Not working
-        // io.to(socket.subscribedRoom).emit('subscribed-listener', socket.roomId);
+        io.to(roomIds[socket.subscribedRoom]).emit('subscribed-listener', socket.roomId);
         socket.join(socket.subscribedRoom);
         socket.emit('subscribed', room);
         console.log('User in room ' + socket.roomId + ' joins room ' + socket.subscribedRoom);

@@ -12,19 +12,22 @@
       <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link rel="icon" href="ninja16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="ninja80.png" type="image/png" sizes="80x80">
     <meta name="description" content="Quick and realtime share text between computers or mobile devices without the need for a account.">
     <meta name="keywords" content="clipboard, online, realtime, virtual, sharing, computer, mobile, exchange, copy, paste, transfer">
     <meta name="author" content="Tim de Pater - TrafeX.nl">
+
 </head>
 <body role="document">
 
     <div class="container">
         <h1>Clipboard.ninja - Realtime Clipboard</h1>
         <p>This online clipboard makes it easy to share text between computers or mobile devices.</p>
-        <strong>Steps</strong>
+        <strong>How to use</strong>
         <ol>
             <li>Open this website on both devices</li>
-            <li>Fill in the room number on the receiving device, press subscribe and wait..</li>
+            <li>Fill in the sender ID on the receiving device, press subscribe and wait..</li>
             <li>Type or paste the text you want to send on the sending device</li>
             <li>See the text appear on the receiving device after pressing 'send'</li>
         </ol>
@@ -37,9 +40,10 @@
             <div class="col-sm-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Room number: <strong><span id="roomid">[connecting..]</span></strong></h3>
+                    <h3 class="panel-title">Send</h3>
                 </div>
                 <div class="panel-body">
+                    <h4>Sender ID: <strong><span id="roomid">[connecting..]</span></strong></h4>
                     <form id="msg" action="">
                         <p>
                             <label for="text">Type or paste text below</label>
@@ -58,13 +62,13 @@
             <div class="col-sm-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                <h3 class="panel-title">Subscribe to room</h3>
+                <h3 class="panel-title">Receive</h3>
                 </div>
                 <div class="panel-body">
                     <form id="subscribe" action="">
                         <p>
-                            <label for="i">Enter room number of the other device to receive the text</label>
-                            <input id="i" type="number" class="form-control" placeholder="Enter room.." min="100000">
+                            <label for="i">Enter sender ID of the other device to receive the text</label>
+                            <input id="i" type="number" class="form-control" placeholder="Enter sender ID.." min="100000">
                         </p>
                         <button type="submit" class="btn btn-primary">Subscribe</button>
                     </form>
@@ -113,7 +117,7 @@
             $('#subscribed-room').text('Received text from room ' + roomId);
         });
         socket.on('subscribed-listener', function(fromRoom){
-            $('#announce').text('A user subscribed.');
+            $('#announce').text('A receiver subscribed.');
             $('#announce').slideDown().delay(2000).slideUp();
         });
 
