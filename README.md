@@ -1,13 +1,6 @@
 # Clipboard.ninja
 
-Online realtime clipboard for exchanging text between everything with a browser.
-
-## Todo
-
-* Add help (step 1.. step 2..) and 'how does it work' page.
-* Add timestamps to send/received messages
-* Add timestamp to console.log output
-* Add support for newlines
+Online realtime clipboard for exchanging text between computers and mobile devices.
 
 ## Nice to have
 

@@ -17,7 +17,6 @@
     <meta name="description" content="Realtime clipboard to easily and secure share text between computers or mobile devices">
     <meta name="keywords" content="clipboard, online, realtime, virtual, sharing, computer, mobile, exchange, copy, paste, transfer, secure">
     <meta name="author" content="Tim de Pater - TrafeX.nl">
-
 </head>
 <body role="document">
 
@@ -34,12 +33,12 @@
         <p>This online clipboard makes it easy to share text between computers or mobile devices.</p>
         <ul class="nav nav-tabs" role="tablist">
             <li class="active"><a href="#howtouse" role="tab" data-toggle="tab">How to use</a></li>
-            <li><a href="#privacy" role="tab" data-toggle="tab">Privacy</a></li>
+            <li><a href="#privacy" role="tab" data-toggle="tab">Privacy & Security</a></li>
         </ul>
 
         <div class="tab-content">
             <div class="tab-pane fade in active" id="howtouse">
-                <h4>How to use</h4>
+                <br>
                 <ol>
                     <li>Open this website on both devices</li>
                     <li>Enter the sender ID on the receiving device and press connect</li>
@@ -48,7 +47,7 @@
                 </ol>
             </div>
             <div class="tab-pane fade" id="privacy">
-                <h4>Privacy & security</h4>
+                <br>
                 The following precautions are taken to make sure sensitive information can safely be sent using this website.
                 <ul>
                     <li>The website is running on HTTPS which means the connection to and from the server is <strong>encrypted</strong>.</li>
@@ -77,7 +76,7 @@
                         </p>
                         <button type="submit" class="btn btn-primary">Send</button>
                     </form>
-                    <br />
+                    <br>
                     <p>
                         <h4>History</h4>
                         <ul id="messages"></ul>
@@ -92,13 +91,15 @@
                 </div>
                 <div class="panel-body">
                     <form id="subscribe" action="">
-                        <p>
-                            <label for="i">Enter the sender ID to connect with</label>
+                        <label for="i">Enter the sender ID to connect with</label>
+                        <div class="input-group">
                             <input id="i" type="number" class="form-control" placeholder="Enter sender ID.." min="100000">
-                        </p>
-                        <button type="submit" class="btn btn-primary">Connect</button>
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">Connect</button>
+                            </span>
+                        </div>
                     </form>
-                    <br />
+                    <br>
                     <p style="display: none">
                         <h4 id="subscribed-room"></h4>
                         <ul id="received-messages"></ul>
@@ -121,7 +122,7 @@
         $('#msg').submit(function(){
             var msg = $('#text').val();
             socket.emit('publish', msg);
-            $('#messages').prepend($('<li>').text(addTimestamp(msg)));
+            $('#messages').prepend($('<li>').append($('<code>').html(nl2br(msg))));
             $('#text').val('');
             return false;
         });
@@ -133,7 +134,7 @@
 
         // Events
         socket.on('message', function(msg){
-            $('#received-messages').prepend($('<li>').text(addTimestamp(msg)));
+            $('#received-messages').prepend($('<li>').append($('<code>').html(nl2br(msg))));
         });
         socket.on('registered', function(roomId){
             $('#roomid').text(roomId);
@@ -169,10 +170,14 @@
             $('#global-alert').slideDown();
         });
 
-        function addTimestamp(msg) {
-            // @todo:
-            //return $.datepicker.formatDate('yy-mm-dd', new Date()) + ': ' + msg;
-            return msg;
+        function nl2br(text) {
+            var htmls = [];
+            var lines = text.split(/\n/);
+            var tmpDiv = jQuery(document.createElement('div'));
+            for (var i = 0 ; i < lines.length ; i++) {
+                htmls.push(tmpDiv.text(lines[i]).html());
+            }
+            return htmls.join("<br>");
         }
     </script>
 
