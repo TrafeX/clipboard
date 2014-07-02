@@ -22,15 +22,40 @@
 <body role="document">
 
     <div class="container">
-        <h1>Clipboard.ninja - Realtime Clipboard</h1>
+
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <span class="navbar-brand"><img src="ninja30.png" alt="Clipboard Ninja">Clipboard.ninja - Realtime clipboard</span>
+                </div>
+            </div>
+        </nav>
+
         <p>This online clipboard makes it easy to share text between computers or mobile devices.</p>
-        <strong>How to use</strong>
-        <ol>
-            <li>Open this website on both devices</li>
-            <li>Fill in the sender ID on the receiving device, press subscribe and wait..</li>
-            <li>Type or paste the text you want to send on the sending device</li>
-            <li>See the text appear on the receiving device after pressing 'send'</li>
-        </ol>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#howtouse" role="tab" data-toggle="tab">How to use</a></li>
+            <li><a href="#privacy" role="tab" data-toggle="tab">Privacy</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="howtouse">
+                <h4>How to use</h4>
+                <ol>
+                    <li>Open this website on both devices</li>
+                    <li>Enter the sender ID on the receiving device and press connect</li>
+                    <li>Type or paste the text you want to send on the sending device</li>
+                    <li>See the text appear on the receiving device after pressing 'send'</li>
+                </ol>
+            </div>
+            <div class="tab-pane fade" id="privacy">
+                <h4>Privacy & security</h4>
+                <ul>
+                    <li>The data send/received via this website is not stored on the server</li>
+                    <li>The data send/received via this website is only visible for the receiver with the correct sender ID</li>
+                    <li>The connection to the server is encrypted with SSL</li>
+                </ul>
+            </div>
+        </div>
 
         <div class="alert alert-danger" role="alert" id="global-alert" style="display: none">
             Unknown error.
@@ -67,10 +92,10 @@
                 <div class="panel-body">
                     <form id="subscribe" action="">
                         <p>
-                            <label for="i">Enter sender ID of the other device to receive the text</label>
+                            <label for="i">Enter the sender ID to connect with</label>
                             <input id="i" type="number" class="form-control" placeholder="Enter sender ID.." min="100000">
                         </p>
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                        <button type="submit" class="btn btn-primary">Connect</button>
                     </form>
                     <br />
                     <p style="display: none">
@@ -82,7 +107,7 @@
             </div>
         </div>
     <footer>
-        &copy; 2014 <a href="http://www.trafex.nl">Tim de Pater</a>
+        Created by <a href="http://www.trafex.nl">Tim de Pater</a>
     </footer>
     </div>
 
@@ -114,10 +139,10 @@
         });
         socket.on('subscribed', function(roomId){
             $('#global-alert').slideUp();
-            $('#subscribed-room').text('Received text from room ' + roomId);
+            $('#subscribed-room').text('Received text from sender ID ' + roomId);
         });
         socket.on('subscribed-listener', function(fromRoom){
-            $('#announce').text('A receiver subscribed.');
+            $('#announce').text('A receiver connected.');
             $('#announce').slideDown().delay(2000).slideUp();
         });
 

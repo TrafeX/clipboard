@@ -21,6 +21,9 @@ function randomInt(low, high) {
 app.get('/', function(req, res){
     res.sendfile('index.html');
 });
+app.get('/ninja30.png', function(req, res){
+    res.sendfile('ninja30.png');
+});
 
 io.on('connection', function(socket){
 
@@ -58,7 +61,6 @@ io.on('connection', function(socket){
             socket.leave(socket.subscribedRoom);
         }
         socket.subscribedRoom = 'room-' + room
-        // @todo: Not working
         io.to(roomIds[socket.subscribedRoom]).emit('subscribed-listener', socket.roomId);
         socket.join(socket.subscribedRoom);
         socket.emit('subscribed', room);
