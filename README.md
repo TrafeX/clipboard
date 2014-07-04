@@ -2,10 +2,12 @@
 
 Online realtime clipboard for exchanging text between computers and mobile devices.
 
-## Nice to have
+[clipboard.ninja](https://clipboard.ninja)
 
-* Clientside encryption
-* Brute-force protection
-* Number of users in room
-* Support for files
+## TODO
+
 * Syntax higlighting
+* Split code in classes
+* Clientside encryption by using Crypto-JS
+* Brute-force protection
+* Support for files

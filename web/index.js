@@ -32,9 +32,7 @@ io.on('connection', function(socket){
         console.log('ERROR:', socket.roomNr);
         return;
     }
-
     socket.roomId = 'room-' + socket.roomNr;
-
     socket.emit('registered', socket.roomNr);
 
     roomIds[socket.roomId] = socket.id;
@@ -42,6 +40,11 @@ io.on('connection', function(socket){
 
     console.log('User ' + nrUsers + ' registered in room: ' + socket.roomId);
     socket.on('disconnect', function(){
+        io.to(socket.roomId).emit('sender-disconnected');
+        if (socket.subscribedRoom) {
+            io.to(roomIds[socket.subscribedRoom]).emit('receiver-disconnected');
+        }
+
         delete roomIds[socket.roomId];
         --nrUsers;
         console.log('User disconnected from ' + socket.roomId);
@@ -58,13 +61,14 @@ io.on('connection', function(socket){
             return;
         }
         if (socket.subscribedRoom) {
+            io.to(roomIds[socket.subscribedRoom]).emit('receiver-disconnected');
             socket.leave(socket.subscribedRoom);
         }
         socket.subscribedRoom = 'room-' + room
         io.to(roomIds[socket.subscribedRoom]).emit('subscribed-listener', socket.roomId);
         socket.join(socket.subscribedRoom);
         socket.emit('subscribed', room);
-        console.log('User in room ' + socket.roomId + ' joins room ' + socket.subscribedRoom);
+        console.log('User in ' + socket.roomId + ' joins ' + socket.subscribedRoom);
     });
 });
 
