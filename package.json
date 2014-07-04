@@ -1,9 +1,10 @@
 {
   "name": "trafex-clipboard",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Online Clipboard tool",
   "dependencies": {
     "express": "^4.4.4",
+    "log-timestamp": "^0.1.1",
     "socket.io": "^1.0.6"
   }
 }
