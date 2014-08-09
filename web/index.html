@@ -5,27 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clipboard.ninja - Realtime Clipboard</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="boostrap.min.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .dontdisplay {
+            display: none;
+        }
+        #navbar-container {
+            padding-bottom: 5px;
+        }
+        #howtouse, #privacy {
+            padding-top: 5px;
+        }
+    </style>
     <link rel="icon" href="ninja16.png" type="image/png" sizes="16x16">
     <link rel="icon" href="ninja80.png" type="image/png" sizes="80x80">
     <meta name="description" content="Realtime clipboard to easily and secure share text between computers or mobile devices">
     <meta name="keywords" content="clipboard, online, real time, virtual, sharing, computer, mobile, exchange, copy, paste, transfer, secure">
     <meta name="author" content="Tim de Pater - TrafeX.nl">
+
 </head>
 <body role="document">
 
     <div class="container">
 
         <nav class="navbar navbar-default" role="navigation">
-            <div class="container">
+            <div class="container" id="navbar-container">
                 <div class="navbar-header">
-                    <span class="navbar-brand"><img src="ninja30.png" alt="Clipboard Ninja">Clipboard.ninja - Realtime clipboard</span>
+                    <span class="navbar-brand"><img src="ninja30.png" alt="Clipboard Ninja">Clipboard.ninja - Realtime clipboard<br /></span>
                 </div>
             </div>
         </nav>
@@ -38,7 +50,6 @@
 
         <div class="tab-content">
             <div class="tab-pane fade in active" id="howtouse">
-                <br>
                 <ol>
                     <li>Open this website on both devices</li>
                     <li>Enter the sender ID on the receiving device and press connect</li>
@@ -47,7 +58,6 @@
                 </ol>
             </div>
             <div class="tab-pane fade" id="privacy">
-                <br>
                 The following precautions are taken to make sure sensitive information can safely be sent using this website.
                 <ul>
                     <li>The website is running on HTTPS which means the connection to and from the server is <strong>encrypted</strong>.</li>
@@ -57,55 +67,59 @@
             </div>
         </div>
 
-        <div class="alert alert-danger" role="alert" id="global-alert" style="display: none">
+        <div class="alert alert-danger dontdisplay" role="alert" id="global-alert">
             Unknown error.
         </div>
-        <div class="alert alert-success" role="alert" id="announce" style="display: none"></div>
+        <div class="alert alert-success dontdisplay" role="alert" id="announce"></div>
         <div class="row">
             <div class="col-sm-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 id="send-header" class="panel-title">Send</h3>
-                </div>
-                <div class="panel-body">
-                    <h4>Sender ID: <strong><span id="roomid">[connecting..]</span></strong></h4>
-                    <form id="msg" action="">
+                <div id="connect-panel" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="send-header"><span class="glyphicon glyphicon-transfer"></span> Connect</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4>Sender ID: <strong><span id="roomid">[connecting..]</span></strong></h4>
                         <p>
-                            <label for="text">Type or paste text below</label>
-                            <textarea id="text" class="form-control" rows="3" placeholder="Enter text.."></textarea>
+                            Connect to this device by entering the Sender ID on the receiving device.
                         </p>
-                        <button type="submit" class="btn btn-primary">Send</button>
-                    </form>
-                    <br>
-                    <p>
-                        <h4>History</h4>
-                        <ul id="messages"></ul>
-                    </p>
+                        <div id="send-form" class="dontdisplay">
+                            <form id="msg" action="">
+                                <p>
+                                    <label for="text">Type or paste text below</label>
+                                    <textarea id="text" class="form-control" rows="3" placeholder="Enter text.."></textarea>
+                                </p>
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </form>
+                            <br>
+                            <p>
+                                <h4>History</h4>
+                                <ul id="messages"></ul>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
             </div>
             <div class="col-sm-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                <h3 class="panel-title">Receive</h3>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="glyphicon glyphicon-import"></span> Receive</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="subscribe" action="">
+                            <label for="i">Enter the sender ID to connect with</label>
+                            <div class="input-group">
+                                <input id="i" type="number" class="form-control" placeholder="Enter sender ID.." min="100000">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary">Connect</button>
+                                </span>
+                            </div>
+                        </form>
+                        <p>
+                            <h4 id="subscribed-room" class="dontdisplay"></h4>
+                            <ul id="received-messages"></ul>
+                        </p>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <form id="subscribe" action="">
-                        <label for="i">Enter the sender ID to connect with</label>
-                        <div class="input-group">
-                            <input id="i" type="number" class="form-control" placeholder="Enter sender ID.." min="100000">
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-primary">Connect</button>
-                            </span>
-                        </div>
-                    </form>
-                    <br>
-                    <p style="display: none">
-                        <h4 id="subscribed-room"></h4>
-                        <ul id="received-messages"></ul>
-                    </p>
-                </div>
-            </div>
             </div>
         </div>
     <footer>
@@ -123,6 +137,9 @@
         // Listeners
         $('#msg').submit(function(){
             var msg = $('#text').val();
+            if (0 == msg.length) {
+                return false;
+            }
             socket.emit('publish', msg);
             $('#messages').prepend($('<li>').append($('<code>').html(nl2br(msg))));
             $('#text').val('');
@@ -143,16 +160,22 @@
         });
         socket.on('subscribed', function(roomId){
             $('#global-alert').slideUp();
-            $('#subscribed-room').text('Received text from sender ID ' + roomId);
+            $('#subscribed-room').text('Receiving text from sender ' + roomId);
+            $('#subscribed-room').slideDown();
         });
         socket.on('subscribed-listener', function(fromRoom){
             nrReceivers++;
+            $('#send-form').show();
             $('#announce').text('A receiver connected');
             $('#announce').slideDown().delay(2000).slideUp();
             setSendHeader();
         });
         socket.on('receiver-disconnected', function(){
             nrReceivers--;
+
+            if (nrReceivers < 1) {
+                $('#send-form').hide();
+            }
             $('#announce').text('A receiver disconnected.');
             $('#announce').slideDown().delay(2000).slideUp();
             setSendHeader();
@@ -160,6 +183,7 @@
         socket.on('sender-disconnected', function(){
             $('#global-alert').text('The sender disconnected.');
             $('#global-alert').slideDown().delay(5000).slideUp();
+            $('#subscribed-room').slideUp();
         });
 
         // Connection handling
@@ -185,13 +209,17 @@
         });
 
         function setSendHeader() {
-            var msg = 'Send to ' + nrReceivers;
-            if (1 == nrReceivers) {
-                msg += ' receiver';
+            if (nrReceivers > 0) {
+                var msg = ' Send to ' + nrReceivers;
+                if (1 == nrReceivers) {
+                    msg += ' receiver';
+                } else {
+                    msg += ' receivers';
+                }
             } else {
-                msg += ' receivers';
+                msg = ' Connect';
             }
-            $('#send-header').text(msg);
+            $('#send-header').html($('<span class="glyphicon glyphicon-export"></span>')).append(msg);
         }
 
         function nl2br(text) {

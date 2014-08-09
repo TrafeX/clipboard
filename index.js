@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 require('log-timestamp');
@@ -18,13 +19,7 @@ function randomInt(low, high) {
     return number;
 }
 
-
-app.get('/', function(req, res){
-    res.sendfile('index.html');
-});
-app.get('/ninja30.png', function(req, res){
-    res.sendfile('ninja30.png');
-});
+app.use(express.static(__dirname + '/web'));
 
 io.on('connection', function(socket){
 
