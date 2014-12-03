@@ -37,33 +37,43 @@
         <nav class="navbar navbar-default" role="navigation">
             <div class="container" id="navbar-container">
                 <div class="navbar-header">
-                    <span class="navbar-brand"><img src="ninja30.png" alt="Clipboard Ninja">Clipboard.ninja - Realtime clipboard<br /></span>
+                    <span class="navbar-brand"><img src="ninja30.png" alt="Clipboard Ninja">Clipboard.ninja<br /></span>
                 </div>
             </div>
         </nav>
+        <div id="mobile-view">
+            <p>This clipboard makes it easy to share text between your phone, tablet and computer</p>
+            <ol>
+                <li>Open this application or go to the website: <a href="https://clipboard.ninja">https://clipboard.ninja</a></li>
+                <li>Enter the sender ID on the receiving device and press connect</li>
+                <li>Type or paste the text you want to send on the sending device</li>
+                <li>See the text immediately appear on the receiving device after pressing 'send'</li>
+            </ol>
+        </div>
+        <div id="web-view">
+            <p>This online clipboard makes it easy to share text between computers or mobile devices.</p>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#howtouse" role="tab" data-toggle="tab">How to use</a></li>
+                <li><a href="#privacy" role="tab" data-toggle="tab">Privacy & Security</a></li>
+            </ul>
 
-        <p>This online clipboard makes it easy to share text between computers or mobile devices.</p>
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="active"><a href="#howtouse" role="tab" data-toggle="tab">How to use</a></li>
-            <li><a href="#privacy" role="tab" data-toggle="tab">Privacy & Security</a></li>
-        </ul>
-
-        <div class="tab-content">
-            <div class="tab-pane fade in active" id="howtouse">
-                <ol>
-                    <li>Open this website on both devices</li>
-                    <li>Enter the sender ID on the receiving device and press connect</li>
-                    <li>Type or paste the text you want to send on the sending device</li>
-                    <li>See the text immediately appear on the receiving device after pressing 'send'</li>
-                </ol>
-            </div>
-            <div class="tab-pane fade" id="privacy">
-                The following precautions are taken to make sure sensitive information can safely be sent using this website.
-                <ul>
-                    <li>The website is running on HTTPS which means the connection to and from the server is <strong>encrypted</strong>.</li>
-                    <li>Data send and received via the website is <strong>never stored or visible on the server</strong>.</li>
-                    <li>You need to be connected to the sender at the moment data is send, <strong>it's not possible to retrieve the data afterwards.</strong></li>
-                </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="howtouse">
+                    <ol>
+                        <li>Open this website on both devices</li>
+                        <li>Enter the sender ID on the receiving device and press connect</li>
+                        <li>Type or paste the text you want to send on the sending device</li>
+                        <li>See the text immediately appear on the receiving device after pressing 'send'</li>
+                    </ol>
+                </div>
+                <div class="tab-pane fade" id="privacy">
+                    The following precautions are taken to make sure sensitive information can safely be sent using this website.
+                    <ul>
+                        <li>The website is running on HTTPS which means the connection to and from the server is <strong>encrypted</strong>.</li>
+                        <li>Data send and received via the website is <strong>never stored or visible on the server</strong>.</li>
+                        <li>You need to be connected to the sender at the moment data is send, <strong>it's not possible to retrieve the data afterwards.</strong></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -128,11 +138,20 @@
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script>
         var socket = io();
         var nrReceivers = 0;
+
+        // Switch mobile view
+        if (getParameterByName('m')) {
+            $('#mobile-view').show();
+            $('#web-view').hide();
+        } else {
+            $('#mobile-view').hide();
+            $('#web-view').show();
+        }
 
         // Listeners
         $('#msg').submit(function(){
@@ -230,6 +249,13 @@
                 htmls.push(tmpDiv.text(lines[i]).html());
             }
             return htmls.join("<br>");
+        }
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
         }
     </script>
 
