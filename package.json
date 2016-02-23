@@ -1,8 +1,13 @@
 {
   "name": "trafex-clipboard",
   "version": "1.0.0",
-  "main": "index.js",
   "description": "Online Clipboard tool",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Tim de Pater <code@trafex.nl>",
+  "repository": "https://github.com/TrafeX/clipboard",
+  "license": "GPL-3.0",
   "dependencies": {
     "express": "4.4.4",
     "log-timestamp": "0.1.1",

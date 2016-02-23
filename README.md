@@ -12,3 +12,12 @@ Or download the [Android App in the Play Store](https://play.google.com/store/ap
  * It's private; you first need to connect to the sender before you can send something, this way the data never has to be (temporarily) stored on the server.
  * You can connect multiple receivers to one sender.
  * No registration is needed, a 6 digit number is enough to connect the devices.
+
+## Docker
+Run the Docker container yourself (uses a selfsigned certificate)
+
+    sudo docker run --name clipboard.ninja -p 80:80 -p 433:433 trafex/clipboard.ninja
+
+Add this to your hosts file and go to https://clipboard.ninja:
+
+    127.0.0.1 clipboard.ninja
