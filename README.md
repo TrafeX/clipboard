@@ -16,7 +16,7 @@ Or download the [Android App in the Play Store](https://play.google.com/store/ap
 ## Docker
 Run the Docker container yourself (uses a selfsigned certificate)
 
-    sudo docker run --name clipboard.ninja -p 80:80 -p 433:433 trafex/clipboard.ninja
+    sudo docker run --name clipboard.ninja -p 80:80 -p 443:443 trafex/clipboard.ninja
 
 Add this to your hosts file and go to https://clipboard.ninja:
 
