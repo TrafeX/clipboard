@@ -17,6 +17,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 COPY config/nginx.conf /etc/nginx/conf.d/nginx.conf
 COPY config/cert.crt /etc/ssl/private/certificate.crt
 COPY config/cert.key /etc/ssl/private/certificate.key
+COPY config/dh.pem /etc/ssl/private/dh.pem
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
