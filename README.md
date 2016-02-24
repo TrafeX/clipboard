@@ -14,6 +14,10 @@ Or download the [Android App in the Play Store](https://play.google.com/store/ap
  * No registration is needed, a 6 digit number is enough to connect the devices.
 
 ## Docker
+
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/trafex/clipboard.ninja.svg)](https://hub.docker.com/r/trafex/clipboard.ninja/)
+
 Run the Docker container yourself (uses a selfsigned certificate)
 
     sudo docker run --name clipboard.ninja -p 80:80 -p 443:443 trafex/clipboard.ninja
