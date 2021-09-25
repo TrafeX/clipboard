@@ -5,6 +5,9 @@ Online realtime clipboard for exchanging text between computers and mobile devic
 See the website [https://clipboard.ninja](https://clipboard.ninja).
 Or download the [Android App in the Play Store](https://play.google.com/store/apps/details?id=nl.trafex.apps.clipboardninja)
 
+## DEPRECATED
+The new repository can be found here: https://github.com/TrafeX/clipboard.ninja
+
 ## Features
 
  * It's realtime; you'll see the text immediately appear on the receiving device.
